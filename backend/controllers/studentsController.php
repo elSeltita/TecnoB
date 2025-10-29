@@ -10,6 +10,7 @@
 */
 
 require_once("./repositories/students.php");
+require_once("./repositories/studentsSubjects.php");
 
 // Para GET (usamos la variable superglobal $_GET):
 //https://www.php.net/manual/es/language.variables.superglobals.php
@@ -77,16 +78,27 @@ function handlePut($conn)
 function handleDelete($conn) 
 {
     $input = json_decode(file_get_contents("php://input"), true);
-
-    $result = deleteStudent($conn, $input['id']);
-    if ($result['deleted'] > 0) 
+    $id = $input['id'];
+    $student_id = $id;
+    $subjects = getSubjectsByStudent($conn, $student_id);
+    if (count($subjects) > 0) 
     {
-        echo json_encode(["message" => "Eliminado correctamente"]);
-    } 
-    else 
+        http_response_code(400);
+        echo json_encode(["error" => "No se puede eliminar el estudiante porque esta inscripto en asignaturas"]);
+        return;
+    }
+    else
     {
-        http_response_code(500);
-        echo json_encode(["error" => "No se pudo eliminar"]);
+        $result = deleteStudent($conn, $id);
+        if ($result['deleted'] > 0) 
+        {
+            echo json_encode(["message" => "Eliminado correctamente"]);
+        }
+        else
+        {
+            http_response_code(500);
+            echo json_encode(["error" => "No se pudo eliminar"]);
+        }
     }
 }
 ?>

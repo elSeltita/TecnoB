@@ -20,8 +20,13 @@ export function createAPI(moduleName, config = {})
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
+        
 
-        if (!res.ok) throw new Error(`Error en ${method}`);
+        if (res.status !== 200) {
+            const errorData = await res.json();
+            const errorMessage = errorData.error || errorData.message;
+            throw new Error(errorMessage);
+        }
         return await res.json();
     }
 
@@ -29,7 +34,11 @@ export function createAPI(moduleName, config = {})
         async fetchAll()
         {
             const res = await fetch(API_URL);
-            if (!res.ok) throw new Error("No se pudieron obtener los datos");
+            if (res.status !== 200) {
+                const errorData = await res.json();
+                const errorMessage = errorData.error || errorData.message;
+                throw new Error(errorMessage);
+            }
             return await res.json();
         },
         //2.0
@@ -37,8 +46,11 @@ export function createAPI(moduleName, config = {})
         {
             const url = `${API_URL}&page=${page}&limit=${limit}`;
             const res = await fetch(url);
-            if (!res.ok)
-                throw new Error("Error al obtener datos paginados");
+            if (res.status !== 200) {
+                const errorData = await res.json();
+                    const errorMessage = errorData.error || errorData.message;
+                    throw new Error(errorMessage);
+            }
             return await res.json();
         },
         async create(data)

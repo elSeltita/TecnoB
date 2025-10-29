@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () =>
     setupFormHandler();
     setupCancelHandler();
     setupPaginationControls();//2.0
+    setupModalHandlers();
+    closeModal();
 });
   
 function setupFormHandler()
@@ -34,20 +36,33 @@ function setupFormHandler()
     
         try 
         {
+            let response;
             if (student.id) 
             {
-                await studentsAPI.update(student);
+                response = await studentsAPI.update(student);
             } 
             else 
             {
-                await studentsAPI.create(student);
+                response = await studentsAPI.create(student);
             }
+            
+            // Mostrar mensaje de éxito si PHP lo devuelve
+            if (response && response.message) 
+            {
+                document.getElementById('modalTitle').textContent = 'Éxito en la operación';
+                document.getElementById('modalMessage').textContent = response.message;
+                openModal();
+            }
+            
             clearForm();
             loadStudents();
         }
         catch (err)
         {
-            console.error(err.message);
+            console.error('Error:', err.message);
+            document.getElementById('modalTitle').textContent = 'Error en la operación';
+            document.getElementById('modalMessage').textContent = err.message;
+            openModal();
         }
     });
 }
@@ -120,6 +135,9 @@ async function loadStudents()
     catch (err) 
     {
         console.error('Error cargando estudiantes:', err.message);
+        document.getElementById('modalTitle').textContent = 'Error al cargar datos';
+        document.getElementById('modalMessage').textContent = err.message;
+        openModal();
     }
 }
   
@@ -178,15 +196,47 @@ function fillForm(student)
 async function confirmDelete(id) 
 {
     if (!confirm('¿Estás seguro que deseas borrar este estudiante?')) return;
+
   
     try 
     {
         await studentsAPI.remove(id);
+        document.getElementById('modalTitle').textContent = 'Exito en la operación';
+        document.getElementById('modalMessage').textContent = 'El estudiante se ha borrado correctamente';
+        openModal();
         loadStudents();
     } 
     catch (err) 
     {
         console.error('Error al borrar:', err.message);
+        document.getElementById('modalTitle').textContent = 'Error en la operación';
+        document.getElementById('modalMessage').textContent = err.message;
+        openModal();
     }
+}
+
+function setupModalHandlers() {
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modal = modalOverlay.querySelector('.modal');
+    const closeBtn = modalOverlay.querySelector('.close-btn');
+    
+    // Cerrar al hacer clic en el overlay (fuera del modal)
+    modalOverlay.addEventListener('click', (event) => {
+        if (event.target.id === 'modalOverlay') {
+            closeModal();
+        }
+    });
+    
+
+    // Cerrar con el botón X
+    closeBtn.addEventListener('click', closeModal);
+}
+
+function openModal() {
+    document.getElementById('modalOverlay').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').style.display = 'none';
 }
   

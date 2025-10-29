@@ -1,20 +1,235 @@
-/*frontend/css/styles.css*/
+/* Estilos personalizados - Diseño minimalista y moderno */
+
+/* Tipografía y base */
 body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-}
-form input, form button {
-    display: block;
-    margin: 10px 0;
-}
-.student {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-top: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #fafafa;
 }
 
-/*2.0*/
-.selectPages{
-    width:auto;
-    display:inline-block;
+/* Formularios */
+form input, 
+form select,
+form button {
+    display: block;
+    margin: 10px 0;
+    transition: all 0.2s ease;
+}
+
+.w3-input,
+.w3-select {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.w3-input:focus,
+.w3-select:focus {
+    outline: none;
+    border-color: #2196F3;
+    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+
+/* Cards y contenedores */
+.w3-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.2s ease;
+}
+
+.w3-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* Botones mejorados */
+.w3-button {
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.w3-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.w3-button:active {
+    transform: translateY(0);
+}
+
+/* Tarjetas de estudiantes */
+.student {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: 10px;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.student:hover {
+    border-color: #2196F3;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Paginación */
+.selectPages {
+    width: auto;
+    display: inline-block;
+    border-radius: 4px;
+}
+
+/* Modal mejorado */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-overlay[style*="block"],
+.modal-overlay:not([style*="none"]) {
+    display: flex !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Caja del modal */
+.modal {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease;
+}
+
+.modal h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.modal p {
+    margin: 0;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Botón de cerrar */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    color: #999;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 300;
+    transition: all 0.2s ease;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    background: #f5f5f5;
+    color: #333;
+    transform: rotate(90deg);
+}
+
+.close-btn:active {
+    transform: rotate(90deg) scale(0.95);
+}
+
+/* Tablas mejoradas */
+.w3-table-all {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.w3-table-all thead tr {
+    background-color: #f5f5f5 !important;
+}
+
+.w3-table-all tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.w3-table-all tbody tr:hover {
+    background-color: #f9f9f9 !important;
+}
+
+/* Mejoras en el panel principal */
+header h2 {
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+main .w3-btn {
+    margin: 8px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+main .w3-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Footer */
+footer {
+    padding: 20px 0;
+}
+
+footer .w3-btn {
+    border-radius: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modal {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    body {
+        padding: 10px;
+    }
 }
