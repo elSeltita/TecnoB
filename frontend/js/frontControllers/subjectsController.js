@@ -9,7 +9,6 @@
 */
 
 import { subjectsAPI } from '../apiConsumers/subjectsAPI.js';
-
 document.addEventListener('DOMContentLoaded', () => 
 {
     loadSubjects();
