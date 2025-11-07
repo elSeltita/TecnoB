@@ -46,6 +46,17 @@ function getStudentById($conn, $id)
     return $result->fetch_assoc(); 
 }
 
+function getEmailByStudent($conn, $email)  {
+
+    $stmt = $conn->prepare("SELECT * FROM students WHERE email = ?");
+    $stmt->bind_param("i", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    //fetch_assoc() devuelve un array asociativo ya listo para convertir en JSON de una fila:
+    return $result->fetch_assoc(); 
+}
+
 function createStudent($conn, $fullname, $email, $age) 
 {
     $sql = "INSERT INTO students (fullname, email, age) VALUES (?, ?, ?)";
