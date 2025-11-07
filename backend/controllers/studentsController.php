@@ -48,7 +48,7 @@ function handlePost($conn)
     $input = json_decode(file_get_contents("php://input"), true);
     $email = $input['email'];
     $exist = getEmailByStudent($conn, $email);
-    if (count($exist) > 0) 
+    if ($exist['exist'] > 0) 
     {
         http_response_code(400);
         echo json_encode(["error" => "No se puede crear el estudiante porque el email ya esta registrado"]);

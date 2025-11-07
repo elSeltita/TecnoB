@@ -48,13 +48,19 @@ function getStudentById($conn, $id)
 
 function getEmailByStudent($conn, $email)  {
 
-    $stmt = $conn->prepare("SELECT * FROM students WHERE email = ?");
-    $stmt->bind_param("i", $email);
+    $sql = "SELECT COUNT(*) FROM students WHERE email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $email);
     $stmt->execute();
-    $result = $stmt->get_result();
 
-    //fetch_assoc() devuelve un array asociativo ya listo para convertir en JSON de una fila:
-    return $result->fetch_assoc(); 
+    // Enlaza el resultado
+    $stmt->bind_result($count);
+    $stmt->fetch();
+
+    $stmt->close();
+
+    return ['exist' => $count];
+
 }
 
 function createStudent($conn, $fullname, $email, $age) 
