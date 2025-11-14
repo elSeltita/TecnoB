@@ -27,11 +27,11 @@ function assignSubjectToStudent($conn, $student_id, $subject_id, $approved)
         
         echo json_encode([
             'status' => 'error',
-            'message' => 'La asignación ya fué hecha previamente'
-    ]);
-    
-    // (Opcional pero recomendado) Detener el script
-    exit;
+            'error' => 'La asignación ya fué hecha previamente'
+        ]);
+        
+        // (Opcional pero recomendado) Detener el script
+        exit;
     }
     return 
     [
@@ -78,9 +78,25 @@ function updateStudentSubject($conn, $id, $student_id, $subject_id, $approved)
             WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("iiii", $student_id, $subject_id, $approved, $id);
-    
-    $stmt->execute();
+    try{
+        
+        $stmt->execute();
 
+    }
+    catch(exception $e){
+        http_response_code(400); 
+
+        // garantiza que la respuesta sea JSON
+        header('Content-Type: application/json');
+        
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'La asignación ya fué hecha previamente'
+        ]);
+        
+        // (Opcional pero recomendado) Detener el script
+        exit;
+    }
     return ['updated' => $stmt->affected_rows];
 }
 
