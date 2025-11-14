@@ -93,4 +93,23 @@ function removeStudentSubject($conn, $id)
 
     return ['deleted' => $stmt->affected_rows];
 }
+
+function linkedSubjectToStudent($conn, $id) {
+
+    $sql = "SELECT COUNT(*) FROM students_subjects WHERE subject_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    // Enlaza el resultado
+    $stmt->bind_result($count);
+    $stmt->fetch();
+
+    $stmt->close();
+
+    return ['linked' => $count];
+}
+
+
+
 ?>

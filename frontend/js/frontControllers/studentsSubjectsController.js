@@ -205,7 +205,12 @@ function fillForm(relation)
 
 async function confirmDelete(id) 
 {
-    if (!confirm('¿Estás seguro que deseas borrar esta inscripción?')) return;
+    if (await confirm("¿Eliminar esta inscripcion?")) {
+        console.log("Eliminado");
+    } else {
+        console.log("Cancelado");
+        return
+    }
 
     try 
     {

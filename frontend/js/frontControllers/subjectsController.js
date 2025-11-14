@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () =>
     loadSubjects();
     setupSubjectFormHandler();
     setupCancelHandler();
+    setupModalHandlers();
+    closeModal();
 });
 
 function setupSubjectFormHandler() 
@@ -121,15 +123,54 @@ function createSubjectActionsCell(subject)
 
 async function confirmDeleteSubject(id)
 {
-    if (!confirm('¿Seguro que deseas borrar esta materia?')) return;
-
+    if (await confirm("¿Eliminar esta asignatura?")) {
+        console.log("Eliminado");
+    } else {
+        console.log("Cancelado");
+        return
+    }
     try
     {
-        await subjectsAPI.remove(id);
+        let response = await subjectsAPI.remove(id);
+
+        if (response && response.message){
+            document.getElementById('modalTitle').textContent = 'Éxito en la operación';
+            document.getElementById('modalMessage').textContent = response.message;
+            openModal();
+        }
+
         loadSubjects();
     }
     catch (err)
     {
-        console.error('Error al borrar materia:', err.message);
+        console.error('Error:', err.message);
+        document.getElementById('modalTitle').textContent = 'Error al eliminar materia';
+        document.getElementById('modalMessage').textContent = err.message;
+        openModal();
     }
+}
+
+function setupModalHandlers() {
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modal = modalOverlay.querySelector('.modal');
+    const closeBtn = modalOverlay.querySelector('.close-btn');
+    
+    // Cerrar al hacer clic en el overlay (fuera del modal)
+    modalOverlay.addEventListener('click', (event) => {
+        if (event.target.id === 'modalOverlay') {
+            closeModal();
+        }
+    });
+    
+
+    // Cerrar con el botón X
+    closeBtn.addEventListener('click', closeModal);
+}
+
+function openModal() {
+    document.getElementById('modalOverlay').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').style.display = 'none';
 }

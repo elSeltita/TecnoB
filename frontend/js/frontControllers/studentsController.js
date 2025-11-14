@@ -195,8 +195,12 @@ function fillForm(student)
   
 async function confirmDelete(id) 
 {
-    if (!confirm('¿Estás seguro que deseas borrar este estudiante?')) return;
-
+    if (await confirm("¿Eliminar este estudiante?")) {
+        console.log("Eliminado");
+    } else {
+        console.log("Cancelado");
+        return
+    }
   
     try 
     {
