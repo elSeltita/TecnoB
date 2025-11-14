@@ -52,7 +52,7 @@ function handlePut($conn)
     else 
     {
         http_response_code(500);
-        echo json_encode(["error" => "No se pudo actualizar"]);
+        echo json_encode(["error" => "No realizó cambios en la asignación"]);
     }
 }
 

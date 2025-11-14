@@ -27,7 +27,7 @@ function assignSubjectToStudent($conn, $student_id, $subject_id, $approved)
         
         echo json_encode([
             'status' => 'error',
-            'message' => 'la asignacion ya fue hecha previamente'
+            'message' => 'La asignación ya fué hecha previamente'
     ]);
     
     // (Opcional pero recomendado) Detener el script
@@ -78,6 +78,7 @@ function updateStudentSubject($conn, $id, $student_id, $subject_id, $approved)
             WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("iiii", $student_id, $subject_id, $approved, $id);
+    
     $stmt->execute();
 
     return ['updated' => $stmt->affected_rows];
