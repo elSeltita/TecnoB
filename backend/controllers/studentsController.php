@@ -46,25 +46,15 @@ function handleGet($conn)
 function handlePost($conn) 
 {
     $input = json_decode(file_get_contents("php://input"), true);
-    $email = $input['email'];
-    $exist = getEmailByStudent($conn, $email);
-    if ($exist['exist'] > 0) 
+    $result = createStudent($conn, $input['fullname'], $input['email'], $input['age']);
+    if ($result['inserted'] > 0) 
     {
-        http_response_code(400);
-        echo json_encode(["error" => "No se puede crear el estudiante porque el email ya esta registrado"]);
-        return;
-
-    } else {
-        $result = createStudent($conn, $input['fullname'], $input['email'], $input['age']);
-        if ($result['inserted'] > 0) 
-        {
-            echo json_encode(["message" => "Estudiante agregado correctamente"]);
-        } 
-        else 
-        {
-            http_response_code(500);
-            echo json_encode(["error" => "No se pudo agregar"]);
-        }
+        echo json_encode(["message" => "Estudiante agregado correctamente"]);
+    } 
+    else 
+    {
+        http_response_code(500);
+        echo json_encode(["error" => "No se pudo agregar"]);
     }
 }
 

@@ -63,22 +63,15 @@ function handlePut($conn)
 function handleDelete($conn) 
 {
     $input = json_decode(file_get_contents("php://input"), true);
-    $id = $input['id'];
-    $linked = linkedSubjectToStudent($conn, $id);
-    if ($linked['linked'] == 0){
-        $result = deleteSubject($conn, $input['id']);
+    $result = deleteSubject($conn, $input['id']);
 
-        if ($result['deleted'] > 0) 
-        {
-            http_response_code(200);
-            echo json_encode(["message" => "Materia eliminada correctamente"]);
-        } else {
-            http_response_code(500);
-            echo json_encode(["error" => "No se pudo eliminar"]);
-        }
+    if ($result['deleted'] > 0) 
+    {
+        http_response_code(200);
+        echo json_encode(["message" => "Materia eliminada correctamente"]);
     } else {
         http_response_code(500);
-        echo json_encode(["error" => "No se pudo eliminar, hay alumnos anotados en la materia"]);
+        echo json_encode(["error" => "No se pudo eliminar"]);
     }
 }
 ?>
