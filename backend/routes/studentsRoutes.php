@@ -25,5 +25,19 @@ routeRequest($conn, [
             return;
         }
         handlePost($conn);
+    },
+    'DELETE' => function($conn) 
+    {
+        $input = json_decode(file_get_contents("php://input"), true);
+        $id = $input['id'];
+        $subjects = getSubjectsByStudent($conn, $id);
+    
+        if (count($subjects) > 0) 
+        {
+            http_response_code(400);
+            echo json_encode(["error" => "No se puede eliminar el estudiante porque esta inscripto en asignaturas"]);
+            return;
+        }
+        handleDelete($conn);
     }
 ]);

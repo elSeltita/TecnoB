@@ -78,26 +78,15 @@ function handleDelete($conn)
 {
     $input = json_decode(file_get_contents("php://input"), true);
     $id = $input['id'];
-    $student_id = $id;
-    $subjects = getSubjectsByStudent($conn, $student_id);
-    if (count($subjects) > 0) 
+    $result = deleteStudent($conn, $id);
+    if ($result['deleted'] > 0) 
     {
-        http_response_code(400);
-        echo json_encode(["error" => "No se puede eliminar el estudiante porque esta inscripto en asignaturas"]);
-        return;
+        echo json_encode(["message" => "Eliminado correctamente"]);
     }
     else
     {
-        $result = deleteStudent($conn, $id);
-        if ($result['deleted'] > 0) 
-        {
-            echo json_encode(["message" => "Eliminado correctamente"]);
-        }
-        else
-        {
-            http_response_code(500);
-            echo json_encode(["error" => "No se pudo eliminar"]);
-        }
+        http_response_code(500);
+        echo json_encode(["error" => "No se pudo eliminar"]);
     }
 }
 ?>
