@@ -28,7 +28,34 @@ function handleGet($conn)
     }
 }
 
-function handlePost($conn) 
+
+function handlePost($conn){
+
+    $input = json_decode(file_get_contents("php://input"),true);
+
+    $name = $input['name'];
+    $exist = VerifyName($conn,$name);
+
+    if ($exist['exist'] > 0) {
+        http_response_code(400);
+        echo json_encode(["error" => "No se puede la materia, el nombre no esta disponible"]);
+        return;
+    }
+
+    else {
+            $result = createSubject($conn, $input['name']);
+            if ($result['inserted'] > 0) 
+                {echo json_encode(["message" => "Materia creada correctamente"]); }                
+                else 
+                {
+                    http_response_code(500);
+                    echo json_encode(["error" => "No se pudo crear"]);                    
+                }
+    }
+}
+
+
+/*function handlePost2($conn) 
 {
     $input = json_decode(file_get_contents("php://input"), true);
 
@@ -42,7 +69,7 @@ function handlePost($conn)
         http_response_code(500);
         echo json_encode(["error" => "No se pudo crear"]);
     }
-}
+}*/
 
 function handlePut($conn) 
 {

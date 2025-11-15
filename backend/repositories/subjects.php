@@ -60,4 +60,21 @@ function deleteSubject($conn, $id)
 
     return ['deleted' => $stmt->affected_rows];
 }
+
+function VerifyName($conn,$name){
+    //Prepara las variables para contar cuantas materias con ese nombre se encuentra
+    $sql= "SELECT COUNT(*) FROM subjects WHERE name = ?";
+    $stmt = $conn->prepare($sql);           
+    $stmt->bind_param("s", $name);  
+    $stmt->execute();
+   
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    $stmt->close();
+
+    return ['exist' => $count];
+
+}
+
+
 ?>
