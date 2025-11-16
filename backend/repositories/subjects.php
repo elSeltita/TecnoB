@@ -61,13 +61,14 @@ function deleteSubject($conn, $id)
     return ['deleted' => $stmt->affected_rows];
 }
 
-function VerifyName($conn,$name){
+function VerifyName($conn,$name){  //Se puede hacer dentro del CreateSubject, pero me husta modularizar
     //Prepara las variables para contar cuantas materias con ese nombre se encuentra
     $sql= "SELECT COUNT(*) FROM subjects WHERE name = ?";
     $stmt = $conn->prepare($sql);           
     $stmt->bind_param("s", $name);  
     $stmt->execute();
    
+    $stmt->store_result(); //Asegura que COUNT(*) se guarde y que no quede NULL, se debe usar cuando usas bind_result() y fetch()
     $stmt->bind_result($count);
     $stmt->fetch();
     $stmt->close();

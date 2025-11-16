@@ -33,7 +33,7 @@ function handlePost($conn){
 
     $input = json_decode(file_get_contents("php://input"),true);
 
-    $name = $input['name'];
+    $name = trim($input['name']); //El trim lo uso para eliminar los datos al principio al final
     $exist = VerifyName($conn,$name);
 
     if ($exist['exist'] > 0) {
@@ -41,7 +41,10 @@ function handlePost($conn){
         echo json_encode(["error" => "No se puede la materia, el nombre no esta disponible"]);
         return;
     }
-
+    else if ($name == ""){
+        http_response_code(400);
+        echo json_encode(["error" => "No se puede poner nombres vacios"]);
+    }
     else {
             $result = createSubject($conn, $input['name']);
             if ($result['inserted'] > 0) 

@@ -30,9 +30,24 @@ function setupSubjectFormHandler()
             id: document.getElementById('subjectId').value.trim(),
             name: document.getElementById('name').value.trim()
         };
+        const subjects = await subjectsAPI.fetchAll();
+        const Exist = subjects.some(s => s.name.toLowerCase() === subject.name.toLowerCase() && s.id != subject.id);
+        
+        if (subject.name === "") {
+            console.error('El nombre no puede estar vacío.')
+            alert("El nombre no puede estar vacío.");
+            return;
+        }
+
+        if (Exist) {
+            console.error('La materia ya existe.');
+            alert("La materia ya existe.");
+            return;
+        }        
 
         try 
         {
+            
             if (subject.id) 
             {
                 await subjectsAPI.update(subject);
