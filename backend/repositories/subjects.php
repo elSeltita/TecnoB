@@ -72,9 +72,9 @@ function VerifyName($conn,$name, $id = null) {  //Se puede hacer dentro del Crea
     else {
         $sql = "SELECT COUNT(*) FROM subjects WHERE name = ? AND id != ?";
         $stmt = $conn->prepare($sql);
-        $stmt = bind_param("si",$name,$id);
+        $stmt -> bind_param("si",$name,$id);
     }
-    
+
     $stmt->execute(); 
     $stmt->store_result(); //Asegura que COUNT(*) se guarde y que no quede NULL, se debe usar cuando usas bind_result() y fetch()
     $stmt->bind_result($count);
