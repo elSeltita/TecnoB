@@ -81,7 +81,7 @@ function VerifyName($conn,$name, $id = null) {  //Se puede hacer dentro del Crea
     $stmt->fetch();
     $stmt->close();
 
-    return ['exist' => $count];
+    return $count;
 
 }
 

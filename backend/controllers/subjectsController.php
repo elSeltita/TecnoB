@@ -40,12 +40,12 @@ function handlePost($conn){
     if ($name == ""){
         http_response_code(400);
         echo json_encode(["error" => "No se puede poner nombres vacios"]);
-        
+        return;
     }
 
-    else if ($exist['exist'] > 0) {
+    else if ($exist > 0) {
         http_response_code(400);
-        echo json_encode(["error" => "No se puede la materia, el nombre no esta disponible"]);
+        echo json_encode(["error" => "No se puede agregar la materia, el nombre no esta disponible"]);
         return;
     }
     
@@ -65,7 +65,6 @@ function handlePut($conn)
 {
     $input = json_decode(file_get_contents("php://input"), true);
     $name = trim($input['name']);
-    $id = $input['id'];
 
 
     if ($name == ""){
@@ -74,9 +73,9 @@ function handlePut($conn)
         return;
     }
 
-    $exist = VerifyName($conn,$name,$id);
+    $exist = VerifyName($conn,$name,$input['id']);
 
-    if ($exist['exist'] > 0) {
+    if ($exist > 0) {
         http_response_code(400);
         echo json_encode(["error" => "Nombre en uso"]);
         return;
