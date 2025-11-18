@@ -36,15 +36,19 @@ function handlePost($conn){
     $name = trim($input['name']); //El trim lo uso para eliminar los datos al principio al final
     $exist = VerifyName($conn,$name);
 
-    if ($exist['exist'] > 0) {
+
+    if ($name == ""){
+        http_response_code(400);
+        echo json_encode(["error" => "No se puede poner nombres vacios"]);
+        
+    }
+
+    else if ($exist['exist'] > 0) {
         http_response_code(400);
         echo json_encode(["error" => "No se puede la materia, el nombre no esta disponible"]);
         return;
     }
-    else if ($name == ""){
-        http_response_code(400);
-        echo json_encode(["error" => "No se puede poner nombres vacios"]);
-    }
+    
     else {
             $result = createSubject($conn, $input['name']);
             if ($result['inserted'] > 0) 
@@ -57,28 +61,29 @@ function handlePost($conn){
     }
 }
 
-
-/*function handlePost2($conn) 
-{
-    $input = json_decode(file_get_contents("php://input"), true);
-
-    $result = createSubject($conn, $input['name']);
-    if ($result['inserted'] > 0) 
-    {
-        echo json_encode(["message" => "Materia creada correctamente"]);
-    } 
-    else 
-    {
-        http_response_code(500);
-        echo json_encode(["error" => "No se pudo crear"]);
-    }
-}*/
-
 function handlePut($conn) 
 {
     $input = json_decode(file_get_contents("php://input"), true);
+    $name = trim($input['name']);
+    $id = $input['id'];
+
+
+    if ($name == ""){
+        http_response_code(400);
+        echo json_encode(["error" => "Nombre en blanco"]);
+        return;
+    }
+
+    $exist = VerifyName($conn,$name,$id);
+
+    if ($exist['exist'] > 0) {
+        http_response_code(400);
+        echo json_encode(["error" => "Nombre en uso"]);
+        return;
+    }
 
     $result = updateSubject($conn, $input['id'], $input['name']);
+
     if ($result['updated'] > 0) 
     {
         echo json_encode(["message" => "Materia actualizada correctamente"]);
@@ -89,6 +94,7 @@ function handlePut($conn)
         echo json_encode(["error" => "No se pudo actualizar"]);
     }
 }
+
 
 function handleDelete($conn) 
 {
