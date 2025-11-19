@@ -9,13 +9,13 @@
 */
 
 import { createAPI } from './apiFactory.js';
-export const studentsSubjectsAPI = createAPI('studentsSubjects');
+//export const studentsSubjectsAPI = createAPI('studentsSubjects');
 
 /**
  * Ejemplo de extensión de la API:
 */
 // import { createAPI } from './apiFactory.js';
-// const baseAPI = createAPI('studentsSubjects');
+const baseAPI = createAPI('studentsSubjects');
 
 // export const studentsSubjectsAPI = 
 // {
@@ -37,3 +37,24 @@ export const studentsSubjectsAPI = createAPI('studentsSubjects');
 // {
 //     urlOverride: '../../backend/misRutas/personalizadas.php'
 // });
+
+const customAPI = createAPI('custom', 
+{
+    urlOverride: '../../backend/customRoutes/studentsSubjects.php'
+});
+const CUSTOM_ROUTE_URL = '../../backend/customRoutes/studentsSubjects.php';
+export const studentsSubjectsAPI =
+{
+    ...baseAPI,
+
+    async fetchBySubjectId(id) 
+    {
+        const res = await fetch(`${CUSTOM_ROUTE_URL}?subject_id=${id}`);
+        if (!res.ok) {
+            // Intentamos obtener el mensaje de error del backend si lo hay
+            const errorData = await res.json().catch(() => ({}));
+            throw new Error(errorData.error || "No se pudieron obtener estudiantes de la materia");
+        }
+        return await res.json();
+    }
+}

@@ -116,4 +116,14 @@ function assignmentState($conn, $id){
     $result = $stmt->get_result();
     return $result->fetch_assoc();
 }
+
+function getStudentsBySubject($conn, $subjectID){
+    //retorna los nombres de los estudiantes que tienen asignada la materia
+    $sql = "SELECT fullname FROM students WHERE id IN (SELECT student_id FROM students_subjects WHERE subject_id = ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $subjectID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
 ?>
