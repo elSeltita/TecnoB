@@ -1,15 +1,17 @@
-/* Estilos personalizados - Diseño minimalista y moderno */
+/* ==========================================================
+   ESTILOS GENERALES (APLICA A TODO EL SISTEMA)
+   ========================================================== */
 
-/* Tipografía y base */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
     line-height: 1.6;
     color: #333;
     background-color: #fafafa;
+    margin: 0;
 }
 
 /* Formularios */
-form input, 
+form input,
 form select,
 form button {
     display: block;
@@ -31,7 +33,7 @@ form button {
     box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
 }
 
-/* Cards y contenedores */
+/* Cards */
 .w3-card {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
@@ -42,16 +44,16 @@ form button {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 }
 
-/* Botones mejorados */
+/* Botones generales */
 .w3-button {
-    border-radius: 4px;
+    border-radius: 6px;
     transition: all 0.2s ease;
     font-weight: 500;
 }
 
 .w3-button:hover {
     transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 }
 
 .w3-button:active {
@@ -73,27 +75,33 @@ form button {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-/* Paginación */
-.selectPages {
-    width: auto;
-    display: inline-block;
-    border-radius: 4px;
+/* Tablas */
+.w3-table-all {
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-/* Modal mejorado */
+.w3-table-all thead tr {
+    background: #f5f5f5 !important;
+}
+
+.w3-table-all tbody tr:hover {
+    background-color: #f9f9f9 !important;
+}
+
+/* Modal overlay */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0,0,0,0.55);
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
     backdrop-filter: blur(2px);
-    animation: fadeIn 0.2s ease;
+    z-index: 1000;
 }
 
 .modal-overlay[style*="block"],
@@ -101,135 +109,154 @@ form button {
     display: flex !important;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideUp {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* Caja del modal */
+/* Modal box */
 .modal {
     background: white;
     padding: 30px;
-    border-radius: 12px;
+    border-radius: 14px;
     width: 90%;
-    max-width: 400px;
-    position: relative;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    animation: slideUp 0.3s ease;
+    max-width: 420px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.20);
+    animation: modalSlideUp .25s ease;
 }
 
-.modal h2 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    color: #333;
-    font-size: 1.5em;
-    font-weight: 600;
+@keyframes modalSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.modal p {
-    margin: 0;
-    color: #666;
-    line-height: 1.6;
-}
-
-/* Botón de cerrar */
+/* Botón cerrar */
 .close-btn {
     position: absolute;
     top: 15px;
     right: 15px;
     background: transparent;
-    color: #999;
+    color: #888;
     border: none;
-    border-radius: 50%;
     width: 32px;
     height: 32px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: 18px;
-    font-weight: 300;
-    transition: all 0.2s ease;
-    line-height: 1;
+    border-radius: 50%;
+    transition: .25s;
 }
 
 .close-btn:hover {
-    background: #f5f5f5;
+    background: #f2f2f2;
     color: #333;
     transform: rotate(90deg);
 }
 
-.close-btn:active {
-    transform: rotate(90deg) scale(0.95);
+/* ==========================================================
+   ESTILOS EXCLUSIVOS PARA EL INDEX (MEJORADO Y ELEGANTE)
+   ========================================================== */
+
+body.index-page {
+    background: #f1f3f6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
 }
 
-/* Tablas mejoradas */
-.w3-table-all {
-    border-radius: 8px;
-    overflow: hidden;
+/* Header */
+body.index-page header {
+    margin-top: 80px;
+    margin-bottom: 55px;
 }
 
-.w3-table-all thead tr {
-    background-color: #f5f5f5 !important;
-}
-
-.w3-table-all tbody tr {
-    transition: background-color 0.2s ease;
-}
-
-.w3-table-all tbody tr:hover {
-    background-color: #f9f9f9 !important;
-}
-
-/* Mejoras en el panel principal */
-header h2 {
-    font-weight: 600;
+body.index-page header h2 {
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: #202020;
     letter-spacing: -0.5px;
+    text-align: center;
 }
 
-main .w3-btn {
-    margin: 8px;
-    border-radius: 6px;
-    transition: all 0.2s ease;
+/* Contenedor principal */
+body.index-page main {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
+    max-width: 500px;
+    align-items: center;
 }
 
-main .w3-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+/* Botones grandes del menú */
+body.index-page main .w3-btn {
+    background: #ffffff !important;
+    color: #2b2b2b !important;
+
+    width: 100%;
+    padding: 24px 25px;
+
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+
+    border-radius: 18px;
+    border: 2px solid #e3e3e3;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    transition: .28s ease;
+    text-decoration: none;
 }
 
-/* Footer */
-footer {
-    padding: 20px 0;
+/* Flecha animada */
+body.index-page main .w3-btn::after {
+    content: "→";
+    margin-left: 14px;
+    font-size: 1.35rem;
+    opacity: .35;
+    transition: .25s ease;
 }
 
-footer .w3-btn {
-    border-radius: 6px;
+/* Hover bonito */
+body.index-page main .w3-btn:hover {
+    transform: translateY(-6px);
+    border-color: #d4d4d4;
+    box-shadow: 0 12px 26px rgba(0,0,0,0.15);
 }
 
-/* Responsive */
+body.index-page main .w3-btn:hover::after {
+    opacity: 1;
+    transform: translateX(8px);
+}
+
+/* Active */
+body.index-page main .w3-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(0,0,0,0.10);
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 600px) {
+    body.index-page header h2 {
+        font-size: 2.2rem;
+    }
+
+    body.index-page main {
+        max-width: 90%;
+        gap: 26px;
+    }
+
+    body.index-page main .w3-btn {
+        font-size: 1.2rem;
+        padding: 20px 22px;
+    }
+}
+
 @media (max-width: 768px) {
     .modal {
         width: 95%;
         padding: 20px;
-    }
-    
-    body {
-        padding: 10px;
     }
 }
