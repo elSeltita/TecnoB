@@ -31,14 +31,13 @@ routeRequest($conn, [
             return;
         }
         handlePost($conn);
-    }
-]);
-routeRequest($conn, [
+    },
+    
     'PUT' => function($conn) 
     {
         $input = json_decode(file_get_contents("php://input"), true);
         $approved = assignmentState($conn, $input['id']);
-        if ($approved == $input['approved']) 
+        if ($approved['approved'] == $input['approved']) 
         {
             http_response_code(400);
             echo json_encode(["error" => "No realizó cambios en la asignación"]);

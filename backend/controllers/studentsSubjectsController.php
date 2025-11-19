@@ -29,7 +29,7 @@ function handlePost($conn)
     else 
     {
         http_response_code(500);
-        echo json_encode(["error" => "Error al guardar asignación"]);
+        echo json_encode(["error" => "Error al asignar"]);
     }
 }
 
@@ -52,7 +52,7 @@ function handlePut($conn)
     else 
     {
         http_response_code(500);
-        echo json_encode(["error" => "Error al actualizar asignación"]);
+        echo json_encode(["error" => "No se pudo actualizar"]);
     }
 }
 
