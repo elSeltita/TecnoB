@@ -10,30 +10,44 @@
   <link rel="stylesheet" href="../css/w3.css" />
   <link rel="stylesheet" href="../css/styles.css" />
   <script type="module" src="../js/frontControllers/studentsSubjectsController.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="../js/confirm.js"></script>
 </head>
 
 <body class="w3-container">
 
   <h2 class="w3-center w3-margin-top">Asignación de Estudiantes - Materias</h2>
 
+  <!-- Sección de Filtro (Asegúrate de tener esto) -->
+  <div class="w3-card w3-padding w3-margin-bottom w3-white w3-leftbar w3-border-blue">
+    <h4>Consultar Alumnos por Materia</h4>
+    <div class="w3-row-padding" style="margin:0 -16px">
+      <div class="w3-threequarter">
+        <select id="filterSubjectSelect" class="w3-select w3-border">
+          <option value="" disabled selected>Seleccione una materia para filtrar...</option>
+          <!-- Se llena dinámicamente -->
+        </select>
+      </div>
+      <div class="w3-quarter">
+        <button id="btnFilter" class="w3-button w3-blue w3-block">Ver Alumnos</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulario de Asignación -->
   <form id="relationForm" class="w3-card w3-padding w3-margin-bottom w3-light-grey">
     <input type="hidden" id="relationId" />
-
+    
+    <h4>Asignar / Editar</h4>
     <div class="w3-row-padding">
       <div class="w3-third">
         <label>Estudiante</label>
         <select id="studentIdSelect" class="w3-select" required>
           <option value="" disabled selected>Seleccionar estudiante</option>
-          <!-- Opciones se cargan dinámicamente desde JS -->
         </select>
       </div>
       <div class="w3-third">
         <label>Materia</label>
         <select id="subjectIdSelect" class="w3-select" required>
           <option value="" disabled selected>Seleccionar materia</option>
-          <!-- Opciones se cargan dinámicamente desde JS -->
         </select>
       </div>
       <div class="w3-third">
@@ -47,13 +61,8 @@
       <button id="cancelBtn" class="w3-button w3-grey" type="reset">Cancelar</button>
     </div>
   </form>
-  <div class="modal-overlay" id="modalOverlay" style="display: none;">
-    <div class="modal">
-      <button class="close-btn">×</button>
-      <h2 id="modalTitle"></h2>
-      <p id="modalMessage"></p>
-    </div>
-  </div>
+
+  <!-- Tabla Principal -->
   <table class="w3-table-all w3-hoverable w3-card">
     <thead>
       <tr class="w3-light-blue">
@@ -65,6 +74,35 @@
     </thead>
     <tbody id="relationTableBody"></tbody>
   </table>
+
+  <!-- Modal para Resultados del Filtro (Estilo W3) -->
+  <div id="resultsModal" class="w3-modal">
+    <div class="w3-modal-content w3-animate-zoom w3-card-4">
+      <header class="w3-container w3-blue"> 
+        <span onclick="document.getElementById('resultsModal').style.display='none'" 
+        class="w3-button w3-display-topright">&times;</span>
+        <h2 id="resultsModalTitle">Alumnos Inscriptos</h2>
+      </header>
+      <div class="w3-container w3-padding">
+        <ul id="resultsList" class="w3-ul w3-card-4 w3-hoverable w3-white">
+            <!-- Aquí se inyectan los resultados -->
+        </ul>
+        <p id="noResultsMsg" class="w3-text-grey w3-center" style="display:none">No se encontraron alumnos.</p>
+      </div>
+      <footer class="w3-container w3-padding w3-light-grey w3-right-align">
+        <button onclick="document.getElementById('resultsModal').style.display='none'" class="w3-button w3-red">Cerrar</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Modal General de Mensajes (Custom Overlay) -->
+  <div class="modal-overlay" id="modalOverlay" style="display: none;">
+    <div class="modal">
+      <button class="close-btn">×</button>
+      <h2 id="modalTitle"></h2>
+      <p id="modalMessage"></p>
+    </div>
+  </div>
 
   <footer class="w3-center w3-margin-top">
     <a class="w3-btn w3-black" href="../../index.html">Volver al Panel Principal</a>
