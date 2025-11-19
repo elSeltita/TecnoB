@@ -195,30 +195,32 @@ function fillForm(student)
   
 async function confirmDelete(id) 
 {
-    if (await confirm("¿Eliminar este estudiante?")) {
-        console.log("Eliminado");
-    } else {
-        console.log("Cancelado");
-        return
-    }
-  
-    try 
+    if (!confirm('¿Estás seguro que deseas borrar este estudiante?')) return;
+
+    try
     {
-        await studentsAPI.remove(id);
-        document.getElementById('modalTitle').textContent = 'Exito en la operación';
+        const response = await studentsAPI.remove(id, true);
+
+        if (response.error) {
+            document.getElementById('modalTitle').textContent = 'Error en la operación';
+            document.getElementById('modalMessage').textContent = response.error;
+            openModal();
+            return;
+        }
+
+        document.getElementById('modalTitle').textContent = 'Éxito en la operación';
         document.getElementById('modalMessage').textContent = 'El estudiante se ha borrado correctamente';
         openModal();
+
         loadStudents();
-    } 
-    catch (err) 
+    }
+    catch (error)
     {
-        console.error('Error al borrar:', err.message);
-        document.getElementById('modalTitle').textContent = 'Error en la operación';
-        document.getElementById('modalMessage').textContent = err.message;
+        document.getElementById('modalTitle').textContent = 'Error inesperado';
+        document.getElementById('modalMessage').textContent = error.message;
         openModal();
     }
 }
-
 function setupModalHandlers() {
     const modalOverlay = document.getElementById('modalOverlay');
     const modal = modalOverlay.querySelector('.modal');

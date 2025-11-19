@@ -77,27 +77,48 @@ function handlePut($conn)
 function handleDelete($conn) 
 {
     $input = json_decode(file_get_contents("php://input"), true);
-    $id = $input['id'];
-    $student_id = $id;
-    $subjects = getSubjectsByStudent($conn, $student_id);
-    if (count($subjects) > 0) 
-    {
+
+    if (!isset($input['id'])) {
         http_response_code(400);
-        echo json_encode(["error" => "No se puede eliminar el estudiante porque esta inscripto en asignaturas"]);
+        echo json_encode(["error" => "Falta el ID"]);
         return;
     }
-    else
-    {
-        $result = deleteStudent($conn, $id);
-        if ($result['deleted'] > 0) 
-        {
-            echo json_encode(["message" => "Eliminado correctamente"]);
-        }
-        else
-        {
-            http_response_code(500);
-            echo json_encode(["error" => "No se pudo eliminar"]);
-        }
+
+    $id = $input['id'];
+    $aprove = $input['aprove'] ?? false;
+
+    if ($aprove) {
+        return handleAproveDelete($conn, $id);
+    }
+
+    return handleDeleteBasic($conn, $id);
+}
+
+
+function handleAproveDelete($conn, $id)
+{
+    $subjects = getSubjectsByStudent($conn, $id);
+
+    if (count($subjects) > 0) {
+        http_response_code(400);
+        echo json_encode(["error" => "No se puede eliminar, el estudiante tiene materias"]);
+        return;
+    }
+
+    return handleDeleteBasic($conn, $id);
+}
+
+
+function handleDeleteBasic($conn, $id)
+{
+    $result = deleteStudent($conn, $id);
+
+    if ($result['deleted'] > 0) {
+        echo json_encode(["message" => "Eliminado correctamente"]);
+    } else {
+        http_response_code(500);
+        echo json_encode(["error" => "No se pudo eliminar"]);
     }
 }
+
 ?>
