@@ -76,7 +76,6 @@ function VerifyName($conn,$name, $id = null) {  //Se puede hacer dentro del Crea
     }
 
     $stmt->execute(); 
-    $stmt->store_result(); //Asegura que COUNT(*) se guarde y que no quede NULL, se debe usar cuando usas bind_result() y fetch()
     $stmt->bind_result($count);
     $stmt->fetch();
     $stmt->close();
