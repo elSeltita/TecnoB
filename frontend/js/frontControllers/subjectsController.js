@@ -88,6 +88,9 @@ async function loadSubjects()
     catch (err)
     {
         console.error('Error cargando materias:', err.message);
+        document.getElementById('modalTitle').textContent = 'Error en la operación';
+        document.getElementById('modalMessage').textContent = "La materia Existe.";
+        openModal()
     }
 }
 
