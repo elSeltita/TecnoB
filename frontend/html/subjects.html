@@ -10,6 +10,10 @@
   <link rel="stylesheet" href="../css/w3.css" />
   <link rel="stylesheet" href="../css/styles.css" />
   <script type="module" src="../js/frontControllers/subjectsController.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../js/confirm.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../js/confirm.js"></script>
 </head>
 
 <body class="w3-container">
@@ -31,6 +35,14 @@
       <button id="cancelBtn" class="w3-button w3-grey" type="reset">Cancelar</button>
     </div>
   </form>
+
+  <div class="modal-overlay" id="modalOverlay" style="display: none;">
+    <div class="modal">
+      <button class="close-btn">×</button>
+      <h2 id="modalTitle"></h2>
+      <p id="modalMessage"></p>
+    </div>
+  </div>
 
   <table class="w3-table-all w3-hoverable w3-card">
     <thead>

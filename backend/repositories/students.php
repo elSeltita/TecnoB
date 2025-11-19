@@ -46,6 +46,23 @@ function getStudentById($conn, $id)
     return $result->fetch_assoc(); 
 }
 
+function getEmailByStudent($conn, $email)  {
+
+    $sql = "SELECT COUNT(*) FROM students WHERE email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+
+    // Enlaza el resultado
+    $stmt->bind_result($count);
+    $stmt->fetch();
+
+    $stmt->close();
+
+    return ['exist' => $count];
+
+}
+
 function createStudent($conn, $fullname, $email, $age) 
 {
     $sql = "INSERT INTO students (fullname, email, age) VALUES (?, ?, ?)";

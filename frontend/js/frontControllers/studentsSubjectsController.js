@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () =>
     setupFormHandler();
     setupCancelHandler();
     loadRelations();
+    setupModalHandlers();
+    closeModal();
 });
 
 async function initSelects() 
@@ -63,20 +65,31 @@ function setupFormHandler()
 
         try 
         {
+            let response;
             if (relation.id) 
             {
-                await studentsSubjectsAPI.update(relation);
+                response = await studentsSubjectsAPI.update(relation); //si el usuario intenta editar y no cambia nada el backend tira error
             } 
             else 
             {
-                await studentsSubjectsAPI.create(relation);
+                response = await studentsSubjectsAPI.create(relation);
+            }
+            // Mostrar mensaje de éxito si PHP lo devuelve
+            if (response && response.message) 
+            {
+                document.getElementById('modalTitle').textContent = 'Éxito en la operación';
+                document.getElementById('modalMessage').textContent = response.message;
+                openModal();
             }
             clearForm();
             loadRelations();
         } 
         catch (err) 
         {
-            console.error('Error guardando relación:', err.message);
+            console.error('Error:', err.message);
+            document.getElementById('modalTitle').textContent = 'Error en la operación';
+            document.getElementById('modalMessage').textContent = err.message;
+            openModal();
         }
     });
 }
@@ -192,7 +205,12 @@ function fillForm(relation)
 
 async function confirmDelete(id) 
 {
-    if (!confirm('¿Estás seguro que deseas borrar esta inscripción?')) return;
+    if (await confirm("¿Eliminar esta inscripcion?")) {
+        console.log("Eliminado");
+    } else {
+        console.log("Cancelado");
+        return
+    }
 
     try 
     {
@@ -204,3 +222,28 @@ async function confirmDelete(id)
         console.error('Error al borrar inscripción:', err.message);
     }
 }
+function setupModalHandlers() {
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modal = modalOverlay.querySelector('.modal');
+    const closeBtn = modalOverlay.querySelector('.close-btn');
+    
+    // Cerrar al hacer clic en el overlay (fuera del modal)
+    modalOverlay.addEventListener('click', (event) => {
+        if (event.target.id === 'modalOverlay') {
+            closeModal();
+        }
+    });
+    
+
+    // Cerrar con el botón X
+    closeBtn.addEventListener('click', closeModal);
+}
+
+function openModal() {
+    document.getElementById('modalOverlay').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').style.display = 'none';
+}
+  

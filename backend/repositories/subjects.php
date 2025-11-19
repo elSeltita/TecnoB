@@ -60,4 +60,29 @@ function deleteSubject($conn, $id)
 
     return ['deleted' => $stmt->affected_rows];
 }
+
+function VerifyName($conn,$name, $id = null) {  
+    //Prepara las variables para contar cuantas materias con ese nombre se encuentra
+
+    if ($id == null){
+        $sql= "SELECT EXISTS (SELECT 1 FROM subjects WHERE name = ?)";
+        $stmt = $conn->prepare($sql);           
+        $stmt->bind_param("s", $name);
+    }
+    else {
+        $sql = "SELECT EXISTS (SELECT 1 FROM subjects WHERE name = ? AND id != ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt -> bind_param("si",$name,$id);
+    }
+
+    $stmt->execute(); 
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    $stmt->close();
+
+    return $count;
+
+}
+
+
 ?>

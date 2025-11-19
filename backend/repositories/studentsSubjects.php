@@ -75,4 +75,45 @@ function removeStudentSubject($conn, $id)
 
     return ['deleted' => $stmt->affected_rows];
 }
+
+function linkedSubjectToStudent($conn, $id) {
+
+    $sql = "SELECT COUNT(*) FROM students_subjects WHERE subject_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    // Enlaza el resultado
+    $stmt->bind_result($count);
+    $stmt->fetch();
+
+    $stmt->close();
+
+    return ['linked' => $count];
+}
+
+function isAlreadyAssigned($conn, $studentID, $subjectID){
+
+    $sql = "SELECT COUNT(*) FROM students_subjects WHERE student_id = ? AND subject_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $studentID, $subjectID);
+    $stmt->execute();
+
+    // Enlaza el resultado
+    $stmt->bind_result($count);
+    $stmt->fetch();
+
+    $stmt->close();
+
+    return ['assigned' => $count];
+}
+function assignmentState($conn, $id){
+    //retorna el estado de la tupla que coincide con el id
+    $sql = "SELECT approved FROM students_subjects WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
 ?>
