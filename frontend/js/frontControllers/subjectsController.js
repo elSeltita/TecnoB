@@ -33,14 +33,16 @@ function setupSubjectFormHandler()
         const Exist = subjects.some(s => s.name.toLowerCase() === subject.name.toLowerCase() && s.id != subject.id);
         
         if (subject.name === "") {
-            console.error('El nombre no puede estar vacío.')
-            alert("El nombre no puede estar vacío.");
+            document.getElementById('modalTitle').textContent = 'Error en la operación';
+            document.getElementById('modalMessage').textContent = "El nombre no puede estar vacío.";
+            openModal();
             return;
         }
 
         if (Exist) {
-            console.error('La materia ya existe.');
-            alert("La materia ya existe.");
+            document.getElementById('modalTitle').textContent = 'Error en la operación';
+            document.getElementById('modalMessage').textContent = "La materia Existe.";
+            openModal();
             return;
         }        
 
