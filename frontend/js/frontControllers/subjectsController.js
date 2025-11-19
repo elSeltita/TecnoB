@@ -38,19 +38,20 @@ function setupSubjectFormHandler()
             openModal();
             return;
         }
-
-        if (Exist) {
-            document.getElementById('modalTitle').textContent = 'Error en la operación';
-            document.getElementById('modalMessage').textContent = "La materia Existe.";
-            openModal();
-            return;
-        }        
+        
 
         try 
         {
             
             if (subject.id) 
             {
+                
+                if (Exist) {
+                document.getElementById('modalTitle').textContent = 'Error en la operación';
+                document.getElementById('modalMessage').textContent = "La materia Existe.";
+                openModal();
+                return;
+                }
                 await subjectsAPI.update(subject);
             }
             else
