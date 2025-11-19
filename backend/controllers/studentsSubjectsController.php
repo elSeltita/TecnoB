@@ -29,7 +29,7 @@ function handlePost($conn)
     else 
     {
         http_response_code(500);
-        echo json_encode(["error" => "La asignación ya fué hecha previamente"]);
+        echo json_encode(["error" => "Error al guardar asignación"]);
     }
 }
 
@@ -52,7 +52,7 @@ function handlePut($conn)
     else 
     {
         http_response_code(500);
-        echo json_encode(["error" => "No realizó cambios en la asignación"]);
+        echo json_encode(["error" => "Error al actualizar asignación"]);
     }
 }
 

@@ -27,7 +27,7 @@ function assignSubjectToStudent($conn, $student_id, $subject_id, $approved)
         
         echo json_encode([
             'status' => 'error',
-            'error' => 'La asignación ya fué hecha previamente'
+            'error' => 'Error en la asignacion'
         ]);
         
         // (Opcional pero recomendado) Detener el script
@@ -91,7 +91,7 @@ function updateStudentSubject($conn, $id, $student_id, $subject_id, $approved)
         
         echo json_encode([
             'status' => 'error',
-            'message' => 'La asignación ya fué hecha previamente'
+            'message' => 'No se modificó la asignación'
         ]);
         
         // (Opcional pero recomendado) Detener el script
@@ -111,7 +111,7 @@ function removeStudentSubject($conn, $id)
 }
 
 function linkedSubjectToStudent($conn, $id) {
-
+    //esto devuelve la cantidad de materias asignadas al estudiante
     $sql = "SELECT COUNT(*) FROM students_subjects WHERE subject_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id);
@@ -126,6 +126,28 @@ function linkedSubjectToStudent($conn, $id) {
     return ['linked' => $count];
 }
 
+function isAlreadyAssigned($conn, $studentID, $subjectID){
 
+    $sql = "SELECT COUNT(*) FROM students_subjects WHERE student_id = ? AND subject_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $studentID, $subjectID);
+    $stmt->execute();
 
+    // Enlaza el resultado
+    $stmt->bind_result($count);
+    $stmt->fetch();
+
+    $stmt->close();
+
+    return ['assigned' => $count];
+}
+function assignmentState($conn, $id){
+    //retorna el estado de la tupla que coincide con el id
+    $sql = "SELECT approved FROM students_subjects WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
 ?>
